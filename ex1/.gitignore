@@ -1,0 +1,6 @@
+*.anno
+*.fir
+*.v
+target
+test_run_dir
+project
