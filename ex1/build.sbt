@@ -1,4 +1,4 @@
-name := "circuit-chisel"
+name := "seccamp2021-l3-ex1"
 
 version := "0.1"
 
