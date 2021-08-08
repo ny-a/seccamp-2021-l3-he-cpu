@@ -1,0 +1,14 @@
+[[bits]]
+name = "A"
+size = 8
+bytes = [0xF4]
+
+[[bits]]
+name = "B"
+size = 8
+bytes = [0x25]
+
+[[bits]]
+name = "opcode"
+size = 3
+bytes = [0x2]
