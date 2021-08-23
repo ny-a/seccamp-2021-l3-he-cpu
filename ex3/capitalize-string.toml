@@ -1,0 +1,9 @@
+[[file]]
+type = "iyokanl1-json"
+path = "CapitalizeString.json"
+name = "CapString"
+
+[connect]
+"CapString/my_string[0:255]" = "@in[0:255]"
+"@out[0:255]" = "CapString/out[0:255]"
+
