@@ -1,11 +1,11 @@
 import chisel3._
 
-class Counter8bit extends Module {
+class Counter16bit extends Module {
     val io = IO(new Bundle{
-        val out    = Output(UInt(8.W))
+        val out    = Output(UInt(16.W))
     })
 
-    val cnt = RegInit(0.U(8.W))
+    val cnt = RegInit(0.U(16.W))
 
     io.out := cnt
 

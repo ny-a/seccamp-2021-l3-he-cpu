@@ -1,14 +1,14 @@
 [[bits]]
 name = "A"
 size = 16
-bytes = [0x42]
+bytes = [0x8c]
 
 [[bits]]
 name = "B"
 size = 16
-bytes = [0x25]
+bytes = [0x8a]
 
 [[bits]]
 name = "opcode"
 size = 3
-bytes = [0x1]
+bytes = [0x0]

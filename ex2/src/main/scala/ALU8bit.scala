@@ -9,12 +9,12 @@ object ALUOpcode {
   def OR  = BitPat("b100")
 }
 
-class ALU8bit extends Module {
+class ALU16bit extends Module {
     val io = IO(new Bundle{
-        val inA    = Input(UInt(8.W))
-        val inB    = Input(UInt(8.W))
+        val inA    = Input(UInt(16.W))
+        val inB    = Input(UInt(16.W))
         val opcode = Input(UInt(3.W))
-        val out    = Output(UInt(8.W))
+        val out    = Output(UInt(16.W))
     })
 
     io.out := DontCare
@@ -38,5 +38,4 @@ class ALU8bit extends Module {
     when(io.opcode === ALUOpcode.OR){
         io.out := io.inA | io.inB
     }
-
 }

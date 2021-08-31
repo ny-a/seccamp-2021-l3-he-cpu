@@ -1,11 +1,11 @@
 [[file]]
 type = "iyokanl1-json"
-path = "ALU8bit_converted.json"
+path = "ALU16bit_converted.json"
 name = "ALU"
 
 [connect]
-"ALU/io_inA[0:7]" = "@A[0:7]"
-"ALU/io_inB[0:7]" = "@B[0:7]"
+"ALU/io_inA[0:15]" = "@A[0:15]"
+"ALU/io_inB[0:15]" = "@B[0:15]"
 "ALU/io_opcode[0:2]" = "@opcode[0:2]"
-"@out[0:7]" = "ALU/io_out[0:7]"
+"@out[0:15]" = "ALU/io_out[0:15]"
 

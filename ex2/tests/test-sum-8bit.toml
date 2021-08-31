@@ -1,16 +1,16 @@
 [[file]]
 type = "iyokanl1-json"
-path = "Sum8bit_converted.json"
+path = "Sum16bit_converted.json"
 name = "sum"
 
 [[builtin]]
 type = "rom"
 name = "rom"
 in_addr_width = 9
-out_rdata_width = 8
+out_rdata_width = 16
 
 [connect]
 "rom/addr[0:8]"         = "sum/io_romAddr[0:8]"
-"sum/io_romData[0:7]" = "rom/rdata[0:7]"
+"sum/io_romData[0:15]" = "rom/rdata[0:15]"
 "sum/reset" = "@reset"
-"@out[0:7]" = "sum/io_out[0:7]"
+"@out[0:15]" = "sum/io_out[0:15]"

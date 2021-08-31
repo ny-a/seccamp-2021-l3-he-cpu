@@ -55,7 +55,7 @@ function test_run() {
         exit 1
     fi
 
-    RESULT=`$IYOKAN_PACKET packet2toml --in $RES_FILE  2> /dev/null | grep "out" | sed -r 's/^.*\[(.+)\].*$/\1/'`
+    RESULT=`$IYOKAN_PACKET packet2toml --in $RES_FILE  2> /dev/null | grep "out" | sed -r 's/^.*\[(.+)\].*$/\1/' | awk -F, '{print $1 + ($2 * 256)}'`
     if [ $? -ne 0 ]; then
         echo "failed packet2toml"
         exit 1
@@ -70,12 +70,14 @@ function test_run() {
 
 
 gen_key
-test_run "ALU8bit-01" "test-alu-8bit.toml" "1" "test-alu-8bit-01.in" "22"
-test_run "ALU8bit-02" "test-alu-8bit.toml" "1" "test-alu-8bit-02.in" "29"
-test_run "ALU8bit-03" "test-alu-8bit.toml" "1" "test-alu-8bit-03.in" "36"
-test_run "ALU8bit-04" "test-alu-8bit.toml" "1" "test-alu-8bit-04.in" "209"
-test_run "ALU8bit-05" "test-alu-8bit.toml" "1" "test-alu-8bit-05.in" "245"
+test_run "ALU16bit-01" "test-alu-16bit.toml" "1" "test-alu-16bit-01.in" "22"
+test_run "ALU16bit-01a" "test-alu-16bit.toml" "1" "test-alu-16bit-01a.in" "278"
+test_run "ALU16bit-01b" "test-alu-16bit.toml" "1" "test-alu-16bit-01b.in" "768"
+test_run "ALU16bit-02" "test-alu-16bit.toml" "1" "test-alu-16bit-02.in" "29"
+test_run "ALU16bit-03" "test-alu-16bit.toml" "1" "test-alu-16bit-03.in" "36"
+test_run "ALU16bit-04" "test-alu-16bit.toml" "1" "test-alu-16bit-04.in" "209"
+test_run "ALU16bit-05" "test-alu-16bit.toml" "1" "test-alu-16bit-05.in" "245"
 
-test_run "Sum8bit-01" "test-sum-8bit.toml" "15" "test-sum-8bit-01.in" "249"
+test_run "Sum16bit-01" "test-sum-16bit.toml" "15" "test-sum-16bit-01.in" "505"
 
 rm _test_*

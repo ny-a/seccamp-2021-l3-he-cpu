@@ -1,11 +1,11 @@
 [[bits]]
 name = "A"
-size = 8
+size = 16
 bytes = [0xF4]
 
 [[bits]]
 name = "B"
-size = 8
+size = 16
 bytes = [0x25]
 
 [[bits]]
