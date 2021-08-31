@@ -15,8 +15,10 @@ class Sum8bit(val num:Int, val romWidth:Int) extends Module {
     io.out := sum
 
     when(cnt === num.U){
-      // ここに処理を記述
+      cnt := cnt
+      sum := sum
     }.otherwise{
-      // ここに処理を記述
+      cnt := cnt + 1.U
+      sum := sum + io.romData
     }
 }

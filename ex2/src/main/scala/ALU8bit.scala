@@ -22,6 +22,21 @@ class ALU8bit extends Module {
     when(io.opcode === ALUOpcode.ADD){
         io.out := io.inA + io.inB
     }
-    // ここから続きを記述してください
-    
+
+    when(io.opcode === ALUOpcode.SUB){
+        io.out := io.inA - io.inB
+    }
+
+    when(io.opcode === ALUOpcode.AND){
+        io.out := io.inA & io.inB
+    }
+
+    when(io.opcode === ALUOpcode.XOR){
+        io.out := io.inA ^ io.inB
+    }
+
+    when(io.opcode === ALUOpcode.OR){
+        io.out := io.inA | io.inB
+    }
+
 }
