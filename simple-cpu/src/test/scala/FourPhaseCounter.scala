@@ -6,15 +6,15 @@ import scala.math.log
 import scala.math.ceil
 
 class FourPhaseConuterTest(c: FourPhaseCounter) extends PeekPokeTester(c) {
-  expect(c.io.out, 1<<0)
+  expect(c.io.phase, 0)
   step(1)
-  expect(c.io.out, 1<<1)
+  expect(c.io.phase, 1)
   step(1)
-  expect(c.io.out, 1<<2)
+  expect(c.io.phase, 2)
   step(1)
-  expect(c.io.out, 1<<3)
+  expect(c.io.phase, 3)
   step(5)
-  expect(c.io.out, 1<<0)
+  expect(c.io.phase, 0)
 }
 
 class FourPhaseCounterSpec extends AnyFreeSpec with Matchers {

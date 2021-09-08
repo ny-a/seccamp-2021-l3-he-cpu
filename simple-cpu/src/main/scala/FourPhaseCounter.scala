@@ -1,21 +1,24 @@
 import chisel3._
+import chisel3.util.BitPat
+
+object FourPhase {
+  def InstructionFetch = BitPat("b00")
+  def InstructionDecode = BitPat("b01")
+  def Execution = BitPat("b10")
+  def WriteBack = BitPat("b11")
+}
 
 class FourPhaseCounter extends Module {
-    val io = IO(new Bundle{
-        val out = Output(UInt(4.W))
-    })
+  val io = IO(new Bundle{
+    val phase = Output(UInt(2.W))
+  })
 
-    val cnt = RegInit(1.U(4.W))
+  val phase = RegInit(0.U(2.W))
 
-    io.out := cnt
+  io.phase := phase
 
-    when(cnt === 1.U){
-        cnt := 2.U
-    }.elsewhen(cnt === 2.U){
-        cnt := 4.U
-    }.elsewhen(cnt === 4.U){
-        cnt := 8.U
-    }.otherwise{
-        cnt := 1.U
-    }
+  phase := phase + 1.U
+  when(phase === FourPhase.WriteBack){
+    phase := 0.U
+  }
 }
