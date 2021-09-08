@@ -53,7 +53,7 @@ function test_run() {
         exit 1
     fi
 
-    $IYOKAN tfhe --blueprint $blueprint_toml --bkey $BKEY -i $REQ_FILE -o $RES_FILE -c $cycles 2> /dev/null
+    $IYOKAN tfhe $IYOKAN_OPTION --blueprint $blueprint_toml --bkey $BKEY -i $REQ_FILE -o $RES_FILE -c $cycles 2> /dev/null
     if [ $? -ne 0 ]; then
         echo "failed iyokan"
         exit 1
@@ -81,25 +81,51 @@ function test_run() {
 
 gen_key
 test_run "fib-0" "test-simple-cpu.toml" "100" "0" "0"
+if [[ "$TEST_UNTIL" = "0" ]]; then exit 0; fi
 test_run "fib-1" "test-simple-cpu.toml" "120" "1" "1"
+if [[ "$TEST_UNTIL" = "1" ]]; then exit 0; fi
 test_run "fib-2" "test-simple-cpu.toml" "140" "2" "1"
+if [[ "$TEST_UNTIL" = "2" ]]; then exit 0; fi
 test_run "fib-3" "test-simple-cpu.toml" "160" "3" "2"
+if [[ "$TEST_UNTIL" = "3" ]]; then exit 0; fi
 test_run "fib-4" "test-simple-cpu.toml" "180" "4" "3"
+if [[ "$TEST_UNTIL" = "4" ]]; then exit 0; fi
 test_run "fib-5" "test-simple-cpu.toml" "200" "5" "5"
+if [[ "$TEST_UNTIL" = "5" ]]; then exit 0; fi
 test_run "fib-6" "test-simple-cpu.toml" "220" "6" "8"
+if [[ "$TEST_UNTIL" = "6" ]]; then exit 0; fi
 test_run "fib-7" "test-simple-cpu.toml" "240" "7" "13"
+if [[ "$TEST_UNTIL" = "7" ]]; then exit 0; fi
 test_run "fib-8" "test-simple-cpu.toml" "260" "8" "21"
+if [[ "$TEST_UNTIL" = "8" ]]; then exit 0; fi
 test_run "fib-9" "test-simple-cpu.toml" "280" "9" "34"
+if [[ "$TEST_UNTIL" = "9" ]]; then exit 0; fi
 test_run "fib-10" "test-simple-cpu.toml" "300" "10" "55"
+if [[ "$TEST_UNTIL" = "10" ]]; then exit 0; fi
 test_run "fib-11" "test-simple-cpu.toml" "320" "11" "89"
+if [[ "$TEST_UNTIL" = "11" ]]; then exit 0; fi
 test_run "fib-12" "test-simple-cpu.toml" "340" "12" "144"
+if [[ "$TEST_UNTIL" = "12" ]]; then exit 0; fi
 test_run "fib-13" "test-simple-cpu.toml" "360" "13" "233"
+if [[ "$TEST_UNTIL" = "13" ]]; then exit 0; fi
 test_run "fib-14" "test-simple-cpu.toml" "380" "14" "377"
+if [[ "$TEST_UNTIL" = "14" ]]; then exit 0; fi
 test_run "fib-15" "test-simple-cpu.toml" "400" "15" "610"
+if [[ "$TEST_UNTIL" = "15" ]]; then exit 0; fi
 test_run "fib-16" "test-simple-cpu.toml" "420" "16" "987"
+if [[ "$TEST_UNTIL" = "16" ]]; then exit 0; fi
 test_run "fib-17" "test-simple-cpu.toml" "440" "17" "1597"
+if [[ "$TEST_UNTIL" = "17" ]]; then exit 0; fi
 test_run "fib-18" "test-simple-cpu.toml" "460" "18" "2584"
+if [[ "$TEST_UNTIL" = "18" ]]; then exit 0; fi
 test_run "fib-19" "test-simple-cpu.toml" "480" "19" "4181"
+if [[ "$TEST_UNTIL" = "19" ]]; then exit 0; fi
 test_run "fib-20" "test-simple-cpu.toml" "500" "20" "6765"
+if [[ "$TEST_UNTIL" = "20" ]]; then exit 0; fi
+test_run "fib-21" "test-simple-cpu.toml" "520" "21" "10946"
+if [[ "$TEST_UNTIL" = "21" ]]; then exit 0; fi
+test_run "fib-22" "test-simple-cpu.toml" "540" "22" "17711"
+if [[ "$TEST_UNTIL" = "22" ]]; then exit 0; fi
+test_run "fib-23" "test-simple-cpu.toml" "560" "23" "28657"
 
 rm _test_*
