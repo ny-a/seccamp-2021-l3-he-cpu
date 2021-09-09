@@ -14,26 +14,31 @@ class ALU16bit extends Module {
     val opcode = Input(Bool())
     val dr     = Output(SInt(16.W))
     val flagZ  = Output(Bool())
+    val flagS  = Output(Bool())
   })
 
   val dr = RegInit(0.S(16.W))
   val flagZ = RegInit(0.U(1.W))
+  val flagS = RegInit(0.U(1.W))
 
   dr := dr
   io.dr := dr
   io.flagZ := flagZ
+  io.flagS := flagS
 
   when(io.phase === FourPhase.Execution){
     when(io.opcode === ALUOpcode.ADD){
       val result: SInt = io.in0 + io.in1
       dr := result
       flagZ := result === 0.S
+      flagS := result < 0.S
     }
 
     when(io.opcode === ALUOpcode.SUB){
       val result: SInt = io.in0 - io.in1
       dr := result
       flagZ := result === 0.S
+      flagS := result < 0.S
     }
   }
 }
