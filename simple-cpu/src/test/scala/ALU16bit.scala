@@ -18,14 +18,14 @@ class ALU16bitTester(c: ALU16bit) extends PeekPokeTester(c) {
       // Opcode ADD
       poke(c.io.opcode, ALUOpcode.ADD.value)
       step(1)
-      if (!expect(c.io.dr, (i+j)&0xFFFF)) {
+      if (!expect(c.io.dr, i+j)) {
         b.break
       }
 
       // Opcode SUB
       poke(c.io.opcode, ALUOpcode.SUB.value)
       step(1)
-      if (!expect(c.io.dr, (i-j)&0xFFFF)) {
+      if (!expect(c.io.dr, i-j)) {
         b.break
       }
     }

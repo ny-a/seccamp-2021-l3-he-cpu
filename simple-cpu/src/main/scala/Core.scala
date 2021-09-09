@@ -5,7 +5,7 @@ class Core extends Module {
     val romAddr = Output(UInt(16.W))
     val romData = Input(UInt(16.W))
 
-    val out = Output(UInt(16.W))
+    val out = Output(SInt(16.W))
   })
 
   val phaseCounter = Module(new FourPhaseCounter())

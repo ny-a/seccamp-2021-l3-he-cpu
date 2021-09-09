@@ -5,7 +5,7 @@ import org.scalatest.matchers.should.Matchers
 
 class TopCore(val n: Int) extends Module {
     val io = IO(new Bundle{
-        val out = Output(UInt(16.W))
+        val out = Output(SInt(16.W))
     })
 
     val data = Seq(0x8000, 0x8101, 0x8200, 0x8301, 0x8400 + n, 0xc4c0, 0xcc00,
@@ -33,8 +33,8 @@ class CoreTester(c: TopCore, val n: Int) extends PeekPokeTester(c) {
   }
   val answer = fib(n)
   step(80 + 20 * n)
-  println((answer&0xFFFF).toString)
-  expect(c.io.out, answer&0xFFFF)
+  println(answer.toString)
+  expect(c.io.out, answer)
 }
 
 class CoreSpec extends AnyFreeSpec with Matchers {
