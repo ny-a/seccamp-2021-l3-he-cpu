@@ -110,6 +110,20 @@ class InstructionDecoder extends Module {
           aluControl := ALUOpcode.ADD.value.U
           branchCondition := BranchCondition.IfS.value.U
         }
+        when(io.irValue === BranchConditionCode.BLE){
+          registerWriteEnabled := 0.U
+          ar := io.pcPlus1Value.asSInt
+          br := io.irValue(7, 0).asSInt
+          aluControl := ALUOpcode.ADD.value.U
+          branchCondition := BranchCondition.IfSorZ.value.U
+        }
+        when(io.irValue === BranchConditionCode.BNE){
+          registerWriteEnabled := 0.U
+          ar := io.pcPlus1Value.asSInt
+          br := io.irValue(7, 0).asSInt
+          aluControl := ALUOpcode.ADD.value.U
+          branchCondition := BranchCondition.IfNotZ.value.U
+        }
       }
     }
     when(io.irValue === OpCode1.ComputeIO){
