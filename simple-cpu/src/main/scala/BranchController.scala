@@ -2,17 +2,17 @@ import chisel3._
 import chisel3.util.BitPat
 
 object BranchCondition {
-  def Never = BitPat("b00")
-  def Always = BitPat("b01")
-  def IfZ = BitPat("b10")
-  def IfS = BitPat("b11")
+  def Never = BitPat("b000")
+  def Always = BitPat("b001")
+  def IfZ = BitPat("b010")
+  def IfS = BitPat("b011")
 }
 
 class BranchController extends Module {
   val io = IO(new Bundle{
     val phase = Input(UInt(2.W))
 
-    val branchCondition = Input(UInt(2.W))
+    val branchCondition = Input(UInt(3.W))
 
     val flagZ = Input(Bool())
     val flagS = Input(Bool())

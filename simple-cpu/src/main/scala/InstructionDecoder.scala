@@ -58,7 +58,7 @@ class InstructionDecoder extends Module {
     val br = Output(SInt(16.W))
     val aluControl = Output(Bool())
 
-    val branchCondition = Output(UInt(2.W))
+    val branchCondition = Output(UInt(3.W))
   })
 
   val registerWriteEnabled = RegInit(0.U(1.W))
@@ -66,7 +66,7 @@ class InstructionDecoder extends Module {
   val ar = RegInit(0.S(16.W))
   val br = RegInit(0.S(16.W))
   val aluControl = RegInit(0.U(1.W))
-  val branchCondition = RegInit(0.U(2.W))
+  val branchCondition = RegInit(0.U(3.W))
 
   io.registerWriteEnabled := registerWriteEnabled
   io.registerWrite := registerWrite
