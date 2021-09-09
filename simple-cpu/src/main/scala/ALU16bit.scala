@@ -4,6 +4,9 @@ import chisel3.util.BitPat
 object ALUOpcode {
   def ADD = BitPat("b000")
   def SUB = BitPat("b001")
+  def AND = BitPat("b010")
+  def OR = BitPat("b011")
+  def XOR = BitPat("b100")
 }
 
 class ALU16bit extends Module {
@@ -36,6 +39,27 @@ class ALU16bit extends Module {
 
     when(io.opcode === ALUOpcode.SUB){
       val result: SInt = io.in0 - io.in1
+      dr := result
+      flagZ := result === 0.S
+      flagS := result < 0.S
+    }
+
+    when(io.opcode === ALUOpcode.AND){
+      val result: SInt = (io.in0.asUInt & io.in1.asUInt).asSInt
+      dr := result
+      flagZ := result === 0.S
+      flagS := result < 0.S
+    }
+
+    when(io.opcode === ALUOpcode.OR){
+      val result: SInt = (io.in0.asUInt | io.in1.asUInt).asSInt
+      dr := result
+      flagZ := result === 0.S
+      flagS := result < 0.S
+    }
+
+    when(io.opcode === ALUOpcode.XOR){
+      val result: SInt = (io.in0.asUInt ^ io.in1.asUInt).asSInt
       dr := result
       flagZ := result === 0.S
       flagS := result < 0.S

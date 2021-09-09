@@ -145,6 +145,41 @@ class InstructionDecoder extends Module {
         br := io.registerValue1
         aluControl := ALUOpcode.SUB.value.U
       }
+      when(io.irValue === OpCode3.AND){
+        registerWriteEnabled := 1.U
+        registerWrite := io.irValue(10, 8)
+        io.registerRead0 := io.irValue(10, 8)
+        io.registerRead1 := io.irValue(13, 11)
+        ar := io.registerValue0
+        br := io.registerValue1
+        aluControl := ALUOpcode.AND.value.U
+      }
+      when(io.irValue === OpCode3.OR){
+        registerWriteEnabled := 1.U
+        registerWrite := io.irValue(10, 8)
+        io.registerRead0 := io.irValue(10, 8)
+        io.registerRead1 := io.irValue(13, 11)
+        ar := io.registerValue0
+        br := io.registerValue1
+        aluControl := ALUOpcode.OR.value.U
+      }
+      when(io.irValue === OpCode3.XOR){
+        registerWriteEnabled := 1.U
+        registerWrite := io.irValue(10, 8)
+        io.registerRead0 := io.irValue(10, 8)
+        io.registerRead1 := io.irValue(13, 11)
+        ar := io.registerValue0
+        br := io.registerValue1
+        aluControl := ALUOpcode.XOR.value.U
+      }
+      when(io.irValue === OpCode3.CMP){
+        registerWriteEnabled := 0.U
+        io.registerRead0 := io.irValue(10, 8)
+        io.registerRead1 := io.irValue(13, 11)
+        ar := io.registerValue0
+        br := io.registerValue1
+        aluControl := ALUOpcode.SUB.value.U
+      }
       when(io.irValue === OpCode3.MOV){
         registerWriteEnabled := 1.U
         registerWrite := io.irValue(10, 8)
@@ -152,6 +187,13 @@ class InstructionDecoder extends Module {
         ar := 0.S
         br := io.registerValue1
         aluControl := ALUOpcode.ADD.value.U
+      }
+      when(io.irValue === OpCode3.HLT){
+        registerWriteEnabled := 0.U
+        ar := io.pcPlus1Value.asSInt
+        br := -1.S
+        aluControl := ALUOpcode.ADD.value.U
+        branchCondition := BranchCondition.Always.value.U
       }
     }
   }
