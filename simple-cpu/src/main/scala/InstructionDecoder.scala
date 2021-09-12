@@ -188,6 +188,40 @@ class InstructionDecoder extends Module {
         br := io.registerValue1
         aluControl := ALUOpcode.ADD.value.U
       }
+
+      when(io.irValue === OpCode3.SLL){
+        registerWriteEnabled := 1.U
+        registerWrite := io.irValue(10, 8)
+        io.registerRead0 := io.irValue(10, 8)
+        ar := io.registerValue0
+        br := io.irValue(3, 0).zext
+        aluControl := ALUOpcode.SLL.value.U
+      }
+      when(io.irValue === OpCode3.SLR){
+        registerWriteEnabled := 1.U
+        registerWrite := io.irValue(10, 8)
+        io.registerRead0 := io.irValue(10, 8)
+        ar := io.registerValue0
+        br := io.irValue(3, 0).zext
+        aluControl := ALUOpcode.SLR.value.U
+      }
+      when(io.irValue === OpCode3.SRL){
+        registerWriteEnabled := 1.U
+        registerWrite := io.irValue(10, 8)
+        io.registerRead0 := io.irValue(10, 8)
+        ar := io.registerValue0
+        br := io.irValue(3, 0).zext
+        aluControl := ALUOpcode.SRL.value.U
+      }
+      when(io.irValue === OpCode3.SRA){
+        registerWriteEnabled := 1.U
+        registerWrite := io.irValue(10, 8)
+        io.registerRead0 := io.irValue(10, 8)
+        ar := io.registerValue0
+        br := io.irValue(3, 0).zext
+        aluControl := ALUOpcode.SRA.value.U
+      }
+
       when(io.irValue === OpCode3.HLT){
         registerWriteEnabled := 0.U
         ar := io.pcPlus1Value.asSInt
