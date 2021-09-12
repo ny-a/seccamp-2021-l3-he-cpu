@@ -2,11 +2,11 @@ import chisel3._
 import chisel3.util.BitPat
 
 object ALUOpcode {
-  def ADD = BitPat("b000")
-  def SUB = BitPat("b001")
-  def AND = BitPat("b010")
-  def OR = BitPat("b011")
-  def XOR = BitPat("b100")
+  def ADD = BitPat("b0000")
+  def SUB = BitPat("b0001")
+  def AND = BitPat("b0010")
+  def OR = BitPat("b0011")
+  def XOR = BitPat("b0100")
 }
 
 class ALU16bit extends Module {
@@ -14,7 +14,7 @@ class ALU16bit extends Module {
     val phase  = Input(UInt(2.W))
     val in0    = Input(SInt(16.W))
     val in1    = Input(SInt(16.W))
-    val opcode = Input(UInt(3.W))
+    val opcode = Input(UInt(4.W))
     val dr     = Output(SInt(16.W))
     val flagZ  = Output(Bool())
     val flagS  = Output(Bool())
