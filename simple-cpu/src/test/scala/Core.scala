@@ -17,7 +17,7 @@ class TopCore(val n: Int) extends Module {
       0xcb10, 0xb919, 0xd000, 0xcb10, 0xb915, 0xc200, 0xcb10, 0xb913, 0xd000,
       0xcb10, 0xb90f, 0xc200, 0xcb10, 0xb90d, 0xd000, 0xcb10, 0xb909, 0xc200,
       0xcb10, 0xb907, 0xd000, 0xcb10, 0xb903, 0xc200, 0xcb10, 0xb901, 0xd060,
-      0xa0ff
+      0xc0d0, 0xc0f0,
     )
 
     val rom = Module(new ExternalRom(data))
@@ -39,7 +39,7 @@ class CoreTester(c: TopCore, val n: Int) extends PeekPokeTester(c) {
     return fib(i - 2) + fib(i - 1)
   }
   val answer = fib(n)
-  step(28 + 12 * n)
+  step(32 + 12 * n)
   println(answer.toString)
   expect(c.io.out, answer)
 }
