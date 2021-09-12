@@ -6,6 +6,7 @@ class Core extends Module {
     val romData = Input(UInt(16.W))
 
     val out = Output(SInt(16.W))
+    val finflag = Output(Bool())
   })
 
   val phaseCounter = Module(new FourPhaseCounter())
@@ -16,6 +17,7 @@ class Core extends Module {
   val branchController = Module(new BranchController())
 
   io.out := instructionDecoder.io.out
+  io.finflag := instructionDecoder.io.finflag
 
   // phase control
   instructionFetcher.io.phase := phaseCounter.io.phase

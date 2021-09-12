@@ -61,6 +61,7 @@ class InstructionDecoder extends Module {
     val branchCondition = Output(UInt(3.W))
 
     val out = Output(SInt(16.W))
+    val finflag = Output(Bool())
   })
 
   val registerWriteEnabled = RegInit(0.U(1.W))
@@ -70,6 +71,7 @@ class InstructionDecoder extends Module {
   val aluControl = RegInit(0.U(4.W))
   val branchCondition = RegInit(0.U(3.W))
   val out = RegInit(0.S(16.W))
+  val finflag = RegInit(false.B)
 
   io.registerWriteEnabled := registerWriteEnabled
   io.registerWrite := registerWrite
@@ -80,6 +82,7 @@ class InstructionDecoder extends Module {
   io.aluControl := aluControl
   io.branchCondition := branchCondition
   io.out := out
+  io.finflag := finflag
 
   when(io.phase === FourPhase.InstructionDecode){
     registerWriteEnabled := 0.U
@@ -240,6 +243,7 @@ class InstructionDecoder extends Module {
         br := -1.S
         aluControl := ALUOpcode.ADD.value.U
         branchCondition := BranchCondition.Always.value.U
+        finflag := true.B
       }
     }
   }

@@ -14,3 +14,4 @@ out_rdata_width = 16
 "simple-cpu/io_romData[0:15]" = "rom/rdata[0:15]"
 "simple-cpu/reset" = "@reset"
 "@out[0:15]" = "simple-cpu/io_out[0:15]"
+"@finflag" = "simple-cpu/io_finflag"
