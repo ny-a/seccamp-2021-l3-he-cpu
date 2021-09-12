@@ -15,8 +15,7 @@ class Core extends Module {
   val alu = Module(new ALU16bit())
   val branchController = Module(new BranchController())
 
-  // DEBUG
-  io.out := registerFile.io.out0
+  io.out := instructionDecoder.io.out
 
   // phase control
   instructionFetcher.io.phase := phaseCounter.io.phase
