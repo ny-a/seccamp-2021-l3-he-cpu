@@ -1,6 +1,6 @@
 [[file]]
-type = "iyokanl1-json"
-path = "Core_converted.json"
+type = "yosys-json"
+path = "Core.json"
 name = "simple-cpu"
 
 [[builtin]]
