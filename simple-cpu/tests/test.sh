@@ -80,52 +80,52 @@ function test_run() {
 
 
 gen_key
-test_run "fib-0" "test-simple-cpu.toml" "28" "0" "0"
+test_run "fib-0" "test-simple-cpu.toml" "32" "0" "0"
 if [[ "$TEST_UNTIL" = "0" ]]; then exit 0; fi
-test_run "fib-1" "test-simple-cpu.toml" "40" "1" "1"
+test_run "fib-1" "test-simple-cpu.toml" "44" "1" "1"
 if [[ "$TEST_UNTIL" = "1" ]]; then exit 0; fi
-test_run "fib-2" "test-simple-cpu.toml" "52" "2" "1"
+test_run "fib-2" "test-simple-cpu.toml" "56" "2" "1"
 if [[ "$TEST_UNTIL" = "2" ]]; then exit 0; fi
-test_run "fib-3" "test-simple-cpu.toml" "64" "3" "2"
+test_run "fib-3" "test-simple-cpu.toml" "68" "3" "2"
 if [[ "$TEST_UNTIL" = "3" ]]; then exit 0; fi
-test_run "fib-4" "test-simple-cpu.toml" "76" "4" "3"
+test_run "fib-4" "test-simple-cpu.toml" "80" "4" "3"
 if [[ "$TEST_UNTIL" = "4" ]]; then exit 0; fi
-test_run "fib-5" "test-simple-cpu.toml" "88" "5" "5"
+test_run "fib-5" "test-simple-cpu.toml" "92" "5" "5"
 if [[ "$TEST_UNTIL" = "5" ]]; then exit 0; fi
-test_run "fib-6" "test-simple-cpu.toml" "100" "6" "8"
+test_run "fib-6" "test-simple-cpu.toml" "104" "6" "8"
 if [[ "$TEST_UNTIL" = "6" ]]; then exit 0; fi
-test_run "fib-7" "test-simple-cpu.toml" "112" "7" "13"
+test_run "fib-7" "test-simple-cpu.toml" "116" "7" "13"
 if [[ "$TEST_UNTIL" = "7" ]]; then exit 0; fi
-test_run "fib-8" "test-simple-cpu.toml" "124" "8" "21"
+test_run "fib-8" "test-simple-cpu.toml" "128" "8" "21"
 if [[ "$TEST_UNTIL" = "8" ]]; then exit 0; fi
-test_run "fib-9" "test-simple-cpu.toml" "136" "9" "34"
+test_run "fib-9" "test-simple-cpu.toml" "140" "9" "34"
 if [[ "$TEST_UNTIL" = "9" ]]; then exit 0; fi
-test_run "fib-10" "test-simple-cpu.toml" "148" "10" "55"
+test_run "fib-10" "test-simple-cpu.toml" "152" "10" "55"
 if [[ "$TEST_UNTIL" = "10" ]]; then exit 0; fi
-test_run "fib-11" "test-simple-cpu.toml" "160" "11" "89"
+test_run "fib-11" "test-simple-cpu.toml" "164" "11" "89"
 if [[ "$TEST_UNTIL" = "11" ]]; then exit 0; fi
-test_run "fib-12" "test-simple-cpu.toml" "172" "12" "144"
+test_run "fib-12" "test-simple-cpu.toml" "176" "12" "144"
 if [[ "$TEST_UNTIL" = "12" ]]; then exit 0; fi
-test_run "fib-13" "test-simple-cpu.toml" "184" "13" "233"
+test_run "fib-13" "test-simple-cpu.toml" "188" "13" "233"
 if [[ "$TEST_UNTIL" = "13" ]]; then exit 0; fi
-test_run "fib-14" "test-simple-cpu.toml" "196" "14" "377"
+test_run "fib-14" "test-simple-cpu.toml" "200" "14" "377"
 if [[ "$TEST_UNTIL" = "14" ]]; then exit 0; fi
-test_run "fib-15" "test-simple-cpu.toml" "208" "15" "610"
+test_run "fib-15" "test-simple-cpu.toml" "212" "15" "610"
 if [[ "$TEST_UNTIL" = "15" ]]; then exit 0; fi
-test_run "fib-16" "test-simple-cpu.toml" "220" "16" "987"
+test_run "fib-16" "test-simple-cpu.toml" "224" "16" "987"
 if [[ "$TEST_UNTIL" = "16" ]]; then exit 0; fi
-test_run "fib-17" "test-simple-cpu.toml" "232" "17" "1597"
+test_run "fib-17" "test-simple-cpu.toml" "236" "17" "1597"
 if [[ "$TEST_UNTIL" = "17" ]]; then exit 0; fi
-test_run "fib-18" "test-simple-cpu.toml" "244" "18" "2584"
+test_run "fib-18" "test-simple-cpu.toml" "248" "18" "2584"
 if [[ "$TEST_UNTIL" = "18" ]]; then exit 0; fi
-test_run "fib-19" "test-simple-cpu.toml" "256" "19" "4181"
+test_run "fib-19" "test-simple-cpu.toml" "260" "19" "4181"
 if [[ "$TEST_UNTIL" = "19" ]]; then exit 0; fi
-test_run "fib-20" "test-simple-cpu.toml" "268" "20" "6765"
+test_run "fib-20" "test-simple-cpu.toml" "272" "20" "6765"
 if [[ "$TEST_UNTIL" = "20" ]]; then exit 0; fi
-test_run "fib-21" "test-simple-cpu.toml" "280" "21" "10946"
+test_run "fib-21" "test-simple-cpu.toml" "284" "21" "10946"
 if [[ "$TEST_UNTIL" = "21" ]]; then exit 0; fi
-test_run "fib-22" "test-simple-cpu.toml" "292" "22" "17711"
+test_run "fib-22" "test-simple-cpu.toml" "296" "22" "17711"
 if [[ "$TEST_UNTIL" = "22" ]]; then exit 0; fi
-test_run "fib-23" "test-simple-cpu.toml" "304" "23" "28657"
+test_run "fib-23" "test-simple-cpu.toml" "308" "23" "28657"
 
 rm _test_*
