@@ -228,6 +228,9 @@ class InstructionDecoder extends Module {
         br := io.irValue(3, 0).zext
         aluControl := ALUOpcode.SRA.value.U
       }
+      when(io.irValue === OpCode3.IN){
+        // TODO: Implement
+      }
       when(io.irValue === OpCode3.OUT){
         registerWriteEnabled := 0.U
         io.registerRead1 := io.irValue(13, 11)
@@ -245,6 +248,12 @@ class InstructionDecoder extends Module {
         branchCondition := BranchCondition.Always.value.U
         finflag := true.B
       }
+    }
+    when(io.irValue === OpCode1.LD){
+      // TODO: Implement
+    }
+    when(io.irValue === OpCode1.ST){
+      // TODO: Implement
     }
   }
 }
