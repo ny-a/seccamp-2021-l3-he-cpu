@@ -27,11 +27,13 @@ class ALU16bit extends Module {
   val dr = RegInit(0.S(16.W))
   val flagZ = RegInit(0.U(1.W))
   val flagS = RegInit(0.U(1.W))
+  val rotateValue = Wire(SInt(16.W))
 
   dr := dr
   io.dr := dr
   io.flagZ := flagZ
   io.flagS := flagS
+  rotateValue := DontCare
 
   when(io.phase === FourPhase.Execution){
     when(io.opcode === ALUOpcode.ADD){
@@ -77,64 +79,61 @@ class ALU16bit extends Module {
     }
 
     when(io.opcode === ALUOpcode.SLR){
-      var result: SInt = 0.S
-
       when(io.in1 === 0.S){
-        result = io.in0
+        rotateValue := io.in0
       }
       when(io.in1 === 1.S){
-        result = Cat(io.in0(0), io.in0(15, 1)).asSInt
+        rotateValue := Cat(io.in0(14, 0), io.in0(15, 15)).asSInt
       }
       when(io.in1 === 2.S){
-        result = Cat(io.in0(1, 0), io.in0(15, 2)).asSInt
+        rotateValue := Cat(io.in0(13, 0), io.in0(15, 14)).asSInt
       }
       when(io.in1 === 3.S){
-        result = Cat(io.in0(2, 0), io.in0(15, 3)).asSInt
+        rotateValue := Cat(io.in0(12, 0), io.in0(15, 13)).asSInt
       }
       when(io.in1 === 4.S){
-        result = Cat(io.in0(3, 0), io.in0(15, 4)).asSInt
+        rotateValue := Cat(io.in0(11, 0), io.in0(15, 12)).asSInt
       }
       when(io.in1 === 5.S){
-        result = Cat(io.in0(4, 0), io.in0(15, 5)).asSInt
+        rotateValue := Cat(io.in0(10, 0), io.in0(15, 11)).asSInt
       }
       when(io.in1 === 6.S){
-        result = Cat(io.in0(5, 0), io.in0(15, 6)).asSInt
+        rotateValue := Cat(io.in0(9, 0), io.in0(15, 10)).asSInt
       }
       when(io.in1 === 7.S){
-        result = Cat(io.in0(6, 0), io.in0(15, 7)).asSInt
+        rotateValue := Cat(io.in0(8, 0), io.in0(15, 9)).asSInt
       }
       when(io.in1 === 8.S){
-        result = Cat(io.in0(7, 0), io.in0(15, 8)).asSInt
+        rotateValue := Cat(io.in0(7, 0), io.in0(15, 8)).asSInt
       }
       when(io.in1 === 9.S){
-        result = Cat(io.in0(8, 0), io.in0(15, 9)).asSInt
+        rotateValue := Cat(io.in0(6, 0), io.in0(15, 7)).asSInt
       }
       when(io.in1 === 10.S){
-        result = Cat(io.in0(9, 0), io.in0(15, 10)).asSInt
+        rotateValue := Cat(io.in0(5, 0), io.in0(15, 6)).asSInt
       }
       when(io.in1 === 11.S){
-        result = Cat(io.in0(10, 0), io.in0(15, 11)).asSInt
+        rotateValue := Cat(io.in0(4, 0), io.in0(15, 5)).asSInt
       }
       when(io.in1 === 12.S){
-        result = Cat(io.in0(11, 0), io.in0(15, 12)).asSInt
+        rotateValue := Cat(io.in0(3, 0), io.in0(15, 4)).asSInt
       }
       when(io.in1 === 13.S){
-        result = Cat(io.in0(12, 0), io.in0(15, 13)).asSInt
+        rotateValue := Cat(io.in0(2, 0), io.in0(15, 3)).asSInt
       }
       when(io.in1 === 14.S){
-        result = Cat(io.in0(13, 0), io.in0(15, 14)).asSInt
+        rotateValue := Cat(io.in0(1, 0), io.in0(15, 2)).asSInt
       }
       when(io.in1 === 15.S){
-        result = Cat(io.in0(14, 0), io.in0(15)).asSInt
+        rotateValue := Cat(io.in0(0, 0), io.in0(15, 1)).asSInt
       }
-
-      dr := result
-      flagZ := result === 0.S
-      flagS := result < 0.S
+      dr := rotateValue
+      flagZ := rotateValue === 0.S
+      flagS := rotateValue < 0.S
     }
 
     when(io.opcode === ALUOpcode.SRL){
-      val result: SInt = (io.in0.asUInt >> io.in1(3, 0).asUInt).asSInt
+      val result: SInt = (io.in0 >> io.in1(3, 0).asUInt).asSInt
       dr := result
       flagZ := result === 0.S
       flagS := result < 0.S
