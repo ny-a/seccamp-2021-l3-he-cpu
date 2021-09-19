@@ -4,9 +4,9 @@ import chisel3.util.BitPat
 object BranchCondition {
   def Never = BitPat("b000")
   def Always = BitPat("b001")
-  def IfS = BitPat("b010")
+  def IfSV = BitPat("b010")
   def IfZ = BitPat("b011")
-  def IfSorZ = BitPat("b100")
+  def IfSVorZ = BitPat("b100")
   def IfNotZ = BitPat("b101")
 }
 
@@ -35,9 +35,9 @@ class BranchController extends Module {
   when(io.phase === FourPhase.Execution){
     isBranching := (
       io.branchCondition === BranchCondition.Always ||
-      (io.branchCondition === BranchCondition.IfS && flagS) ||
+      (io.branchCondition === BranchCondition.IfSV && (flagS ^ flagV)) ||
       (io.branchCondition === BranchCondition.IfZ && flagZ) ||
-      (io.branchCondition === BranchCondition.IfSorZ && (flagS || flagZ)) ||
+      (io.branchCondition === BranchCondition.IfSVorZ && ((flagS ^ flagV) || flagZ)) ||
       (io.branchCondition === BranchCondition.IfNotZ && !flagZ)
     )
   }
