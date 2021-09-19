@@ -53,6 +53,8 @@ class Core extends Module {
   branchController.io.branchCondition := instructionDecoder.io.branchCondition
   branchController.io.flagS := alu.io.flagS
   branchController.io.flagZ := alu.io.flagZ
+  branchController.io.flagC := alu.io.flagC
+  branchController.io.flagV := alu.io.flagV
 
   // Write Back phase
   registerFile.io.drValue := alu.io.dr

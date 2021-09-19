@@ -18,12 +18,16 @@ class BranchController extends Module {
 
     val flagS = Input(Bool())
     val flagZ = Input(Bool())
+    val flagC = Input(Bool())
+    val flagV = Input(Bool())
 
     val isBranching = Output(Bool())
   })
 
   val flagS = RegInit(false.B)
   val flagZ = RegInit(false.B)
+  val flagC = RegInit(false.B)
+  val flagV = RegInit(false.B)
   val isBranching = RegInit(false.B)
 
   io.isBranching := isBranching
@@ -41,5 +45,7 @@ class BranchController extends Module {
   when(io.phase === FourPhase.WriteBack){
     flagS := io.flagS
     flagZ := io.flagZ
+    flagC := io.flagC
+    flagV := io.flagV
   }
 }
