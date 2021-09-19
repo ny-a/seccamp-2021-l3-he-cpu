@@ -54,7 +54,11 @@ class ALU16bit extends Module {
     }
 
     when(io.opcode === ALUOpcode.SUB){
-      result := io.in0 - io.in1
+      val adderResult = Wire(UInt(17.W))
+      adderResult := io.in0.asUInt +& (-io.in1).asUInt
+      result := adderResult(15, 0).asSInt
+      flagC := adderResult(16)
+      flagV := (io.in0(15) ^ io.in1(15)) & (!(io.in1(15) ^ result(15)))
     }
 
     when(io.opcode === ALUOpcode.AND){
