@@ -16,6 +16,6 @@ stat
 EOF
 yosys tmp.ys
 
-dotnet run -p ../../Iyokan-L1/ -c Release ${verilog_without_ext}.json ${verilog_without_ext}_converted.json
-
 echo "Build Done"
+
+rm tmp.ys

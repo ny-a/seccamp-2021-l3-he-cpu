@@ -1,16 +1,17 @@
 [[file]]
-type = "iyokanl1-json"
-path = "Core_converted.json"
+type = "yosys-json"
+path = "Core.json"
 name = "simple-cpu"
 
 [[builtin]]
 type = "rom"
 name = "rom"
-in_addr_width = 4
+in_addr_width = 12
 out_rdata_width = 16
 
 [connect]
-"rom/addr[0:3]" = "simple-cpu/io_romAddr[0:3]"
+"rom/addr[0:11]" = "simple-cpu/io_romAddr[0:11]"
 "simple-cpu/io_romData[0:15]" = "rom/rdata[0:15]"
 "simple-cpu/reset" = "@reset"
 "@out[0:15]" = "simple-cpu/io_out[0:15]"
+"@finflag" = "simple-cpu/io_finflag"

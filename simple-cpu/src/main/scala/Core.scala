@@ -5,7 +5,8 @@ class Core extends Module {
     val romAddr = Output(UInt(16.W))
     val romData = Input(UInt(16.W))
 
-    val out = Output(UInt(16.W))
+    val out = Output(SInt(16.W))
+    val finflag = Output(Bool())
   })
 
   val phaseCounter = Module(new FourPhaseCounter())
@@ -15,8 +16,8 @@ class Core extends Module {
   val alu = Module(new ALU16bit())
   val branchController = Module(new BranchController())
 
-  // DEBUG
-  io.out := registerFile.io.out0
+  io.out := instructionDecoder.io.out
+  io.finflag := instructionDecoder.io.finflag
 
   // phase control
   instructionFetcher.io.phase := phaseCounter.io.phase
@@ -50,7 +51,10 @@ class Core extends Module {
   alu.io.opcode := instructionDecoder.io.aluControl
 
   branchController.io.branchCondition := instructionDecoder.io.branchCondition
+  branchController.io.flagS := alu.io.flagS
   branchController.io.flagZ := alu.io.flagZ
+  branchController.io.flagC := alu.io.flagC
+  branchController.io.flagV := alu.io.flagV
 
   // Write Back phase
   registerFile.io.drValue := alu.io.dr

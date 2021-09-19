@@ -51,22 +51,27 @@ class InstructionDecoder extends Module {
 
     val registerRead0 = Output(UInt(3.W))
     val registerRead1 = Output(UInt(3.W))
-    val registerValue0 = Input(UInt(16.W))
-    val registerValue1 = Input(UInt(16.W))
+    val registerValue0 = Input(SInt(16.W))
+    val registerValue1 = Input(SInt(16.W))
 
-    val ar = Output(UInt(16.W))
-    val br = Output(UInt(16.W))
-    val aluControl = Output(Bool())
+    val ar = Output(SInt(16.W))
+    val br = Output(SInt(16.W))
+    val aluControl = Output(UInt(4.W))
 
-    val branchCondition = Output(UInt(2.W))
+    val branchCondition = Output(UInt(3.W))
+
+    val out = Output(SInt(16.W))
+    val finflag = Output(Bool())
   })
 
-  val registerWriteEnabled = RegInit(0.U(1.W))
+  val registerWriteEnabled = RegInit(false.B)
   val registerWrite = RegInit(0.U(3.W))
-  val ar = RegInit(0.U(16.W))
-  val br = RegInit(0.U(16.W))
-  val aluControl = RegInit(0.U(1.W))
-  val branchCondition = RegInit(0.U(2.W))
+  val ar = RegInit(0.S(16.W))
+  val br = RegInit(0.S(16.W))
+  val aluControl = RegInit(0.U(4.W))
+  val branchCondition = RegInit(0.U(3.W))
+  val out = RegInit(0.S(16.W))
+  val finflag = RegInit(false.B)
 
   io.registerWriteEnabled := registerWriteEnabled
   io.registerWrite := registerWrite
@@ -76,38 +81,61 @@ class InstructionDecoder extends Module {
   io.br := br
   io.aluControl := aluControl
   io.branchCondition := branchCondition
+  io.out := out
+  io.finflag := finflag
 
   when(io.phase === FourPhase.InstructionDecode){
-    registerWriteEnabled := 0.U
+    registerWriteEnabled := false.B
     branchCondition := BranchCondition.Never.value.U
     when(io.irValue === OpCode1.Branch){
       when(io.irValue === OpCode2.LI){
-        registerWriteEnabled := 1.U
+        registerWriteEnabled := true.B
         registerWrite := io.irValue(10, 8)
-        ar := 0.U
-        br := Cat(Fill(8, io.irValue(7)), io.irValue(7, 0))
+        ar := 0.S
+        br := io.irValue(7, 0).asSInt
         aluControl := ALUOpcode.ADD.value.U
       }
       when(io.irValue === OpCode2.Branch){
-        registerWriteEnabled := 0.U
-        ar := io.pcPlus1Value
-        br := Cat(Fill(8, io.irValue(7)), io.irValue(7, 0))
+        registerWriteEnabled := false.B
+        ar := io.pcPlus1Value.asSInt
+        br := io.irValue(7, 0).asSInt
         aluControl := ALUOpcode.ADD.value.U
         branchCondition := BranchCondition.Always.value.U
       }
       when(io.irValue === OpCode2.ConditionalBranch){
         when(io.irValue === BranchConditionCode.BE){
-          registerWriteEnabled := 0.U
-          ar := io.pcPlus1Value
-        br := Cat(Fill(8, io.irValue(7)), io.irValue(7, 0))
+          registerWriteEnabled := false.B
+          ar := io.pcPlus1Value.asSInt
+          br := io.irValue(7, 0).asSInt
           aluControl := ALUOpcode.ADD.value.U
           branchCondition := BranchCondition.IfZ.value.U
+        }
+        when(io.irValue === BranchConditionCode.BLT){
+          registerWriteEnabled := false.B
+          ar := io.pcPlus1Value.asSInt
+          br := io.irValue(7, 0).asSInt
+          aluControl := ALUOpcode.ADD.value.U
+          branchCondition := BranchCondition.IfSV.value.U
+        }
+        when(io.irValue === BranchConditionCode.BLE){
+          registerWriteEnabled := false.B
+          ar := io.pcPlus1Value.asSInt
+          br := io.irValue(7, 0).asSInt
+          aluControl := ALUOpcode.ADD.value.U
+          branchCondition := BranchCondition.IfSVorZ.value.U
+        }
+        when(io.irValue === BranchConditionCode.BNE){
+          registerWriteEnabled := false.B
+          ar := io.pcPlus1Value.asSInt
+          br := io.irValue(7, 0).asSInt
+          aluControl := ALUOpcode.ADD.value.U
+          branchCondition := BranchCondition.IfNotZ.value.U
         }
       }
     }
     when(io.irValue === OpCode1.ComputeIO){
       when(io.irValue === OpCode3.ADD){
-        registerWriteEnabled := 1.U
+        registerWriteEnabled := true.B
         registerWrite := io.irValue(10, 8)
         io.registerRead0 := io.irValue(10, 8)
         io.registerRead1 := io.irValue(13, 11)
@@ -116,7 +144,7 @@ class InstructionDecoder extends Module {
         aluControl := ALUOpcode.ADD.value.U
       }
       when(io.irValue === OpCode3.SUB){
-        registerWriteEnabled := 1.U
+        registerWriteEnabled := true.B
         registerWrite := io.irValue(10, 8)
         io.registerRead0 := io.irValue(10, 8)
         io.registerRead1 := io.irValue(13, 11)
@@ -124,14 +152,108 @@ class InstructionDecoder extends Module {
         br := io.registerValue1
         aluControl := ALUOpcode.SUB.value.U
       }
+      when(io.irValue === OpCode3.AND){
+        registerWriteEnabled := true.B
+        registerWrite := io.irValue(10, 8)
+        io.registerRead0 := io.irValue(10, 8)
+        io.registerRead1 := io.irValue(13, 11)
+        ar := io.registerValue0
+        br := io.registerValue1
+        aluControl := ALUOpcode.AND.value.U
+      }
+      when(io.irValue === OpCode3.OR){
+        registerWriteEnabled := true.B
+        registerWrite := io.irValue(10, 8)
+        io.registerRead0 := io.irValue(10, 8)
+        io.registerRead1 := io.irValue(13, 11)
+        ar := io.registerValue0
+        br := io.registerValue1
+        aluControl := ALUOpcode.OR.value.U
+      }
+      when(io.irValue === OpCode3.XOR){
+        registerWriteEnabled := true.B
+        registerWrite := io.irValue(10, 8)
+        io.registerRead0 := io.irValue(10, 8)
+        io.registerRead1 := io.irValue(13, 11)
+        ar := io.registerValue0
+        br := io.registerValue1
+        aluControl := ALUOpcode.XOR.value.U
+      }
+      when(io.irValue === OpCode3.CMP){
+        registerWriteEnabled := false.B
+        io.registerRead0 := io.irValue(10, 8)
+        io.registerRead1 := io.irValue(13, 11)
+        ar := io.registerValue0
+        br := io.registerValue1
+        aluControl := ALUOpcode.SUB.value.U
+      }
       when(io.irValue === OpCode3.MOV){
-        registerWriteEnabled := 1.U
+        registerWriteEnabled := true.B
         registerWrite := io.irValue(10, 8)
         io.registerRead1 := io.irValue(13, 11)
-        ar := 0.U
+        ar := 0.S
         br := io.registerValue1
         aluControl := ALUOpcode.ADD.value.U
       }
+
+      when(io.irValue === OpCode3.SLL){
+        registerWriteEnabled := true.B
+        registerWrite := io.irValue(10, 8)
+        io.registerRead0 := io.irValue(10, 8)
+        ar := io.registerValue0
+        br := io.irValue(3, 0).zext
+        aluControl := ALUOpcode.SLL.value.U
+      }
+      when(io.irValue === OpCode3.SLR){
+        registerWriteEnabled := true.B
+        registerWrite := io.irValue(10, 8)
+        io.registerRead0 := io.irValue(10, 8)
+        ar := io.registerValue0
+        br := io.irValue(3, 0).zext
+        aluControl := ALUOpcode.SLR.value.U
+      }
+      when(io.irValue === OpCode3.SRL){
+        registerWriteEnabled := true.B
+        registerWrite := io.irValue(10, 8)
+        io.registerRead0 := io.irValue(10, 8)
+        ar := io.registerValue0
+        br := io.irValue(3, 0).zext
+        aluControl := ALUOpcode.SRL.value.U
+      }
+      when(io.irValue === OpCode3.SRA){
+        registerWriteEnabled := true.B
+        registerWrite := io.irValue(10, 8)
+        io.registerRead0 := io.irValue(10, 8)
+        ar := io.registerValue0
+        br := io.irValue(3, 0).zext
+        aluControl := ALUOpcode.SRA.value.U
+      }
+      when(io.irValue === OpCode3.IN){
+        // TODO: Implement
+      }
+      when(io.irValue === OpCode3.OUT){
+        registerWriteEnabled := false.B
+        io.registerRead1 := io.irValue(13, 11)
+        ar := 0.S
+        br := io.registerValue1
+        aluControl := ALUOpcode.ADD.value.U
+        out := io.registerValue1
+      }
+
+      when(io.irValue === OpCode3.HLT){
+        registerWriteEnabled := false.B
+        ar := io.pcPlus1Value.asSInt
+        br := -1.S
+        aluControl := ALUOpcode.ADD.value.U
+        branchCondition := BranchCondition.Always.value.U
+        finflag := true.B
+      }
+    }
+    when(io.irValue === OpCode1.LD){
+      // TODO: Implement
+    }
+    when(io.irValue === OpCode1.ST){
+      // TODO: Implement
     }
   }
 }

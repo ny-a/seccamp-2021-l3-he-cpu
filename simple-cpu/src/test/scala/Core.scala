@@ -5,12 +5,20 @@ import org.scalatest.matchers.should.Matchers
 
 class TopCore(val n: Int) extends Module {
     val io = IO(new Bundle{
-        val out = Output(UInt(16.W))
+        val out = Output(SInt(16.W))
+        val finflag = Output(Bool())
     })
 
-    val data = Seq(0x8000, 0x8101, 0x8200, 0x8301, 0x8400 + n, 0xc4c0, 0xcc00,
-      0xd060, 0xda00, 0xcc10, 0xb805, 0xd860, 0xd300, 0xcc10, 0xb801,
-      0xa0f7, 0xc0d0, 0xc0f0, 0xa0ff
+    val data = Seq(
+      0x8101, 0x8201, 0x8300 + n, 0xcb10, 0xb943, 0xd000, 0xcb10, 0xb93f, 0xc200,
+      0xcb10, 0xb93d, 0xd000, 0xcb10, 0xb939, 0xc200, 0xcb10, 0xb937, 0xd000,
+      0xcb10, 0xb933, 0xc200, 0xcb10, 0xb931, 0xd000, 0xcb10, 0xb92d, 0xc200,
+      0xcb10, 0xb92b, 0xd000, 0xcb10, 0xb927, 0xc200, 0xcb10, 0xb925, 0xd000,
+      0xcb10, 0xb921, 0xc200, 0xcb10, 0xb91f, 0xd000, 0xcb10, 0xb91b, 0xc200,
+      0xcb10, 0xb919, 0xd000, 0xcb10, 0xb915, 0xc200, 0xcb10, 0xb913, 0xd000,
+      0xcb10, 0xb90f, 0xc200, 0xcb10, 0xb90d, 0xd000, 0xcb10, 0xb909, 0xc200,
+      0xcb10, 0xb907, 0xd000, 0xcb10, 0xb903, 0xc200, 0xcb10, 0xb901, 0xd060,
+      0xc0d0, 0xc0f0,
     )
 
     val rom = Module(new ExternalRom(data))
@@ -19,6 +27,7 @@ class TopCore(val n: Int) extends Module {
     rom.io.addr := core.io.romAddr
     core.io.romData := rom.io.data
     io.out := core.io.out
+    io.finflag := core.io.finflag
 }
 
 class CoreTester(c: TopCore, val n: Int) extends PeekPokeTester(c) {
@@ -32,15 +41,20 @@ class CoreTester(c: TopCore, val n: Int) extends PeekPokeTester(c) {
     return fib(i - 2) + fib(i - 1)
   }
   val answer = fib(n)
-  step(80 + 20 * n)
-  println((answer&0xFFFF).toString)
-  expect(c.io.out, answer&0xFFFF)
+  step(12 * n)
+  step(24)
+  expect(c.io.finflag, false)
+  step(8)
+  expect(c.io.finflag, true)
+  println(answer.toString)
+  expect(c.io.out, answer)
+  expect(c.io.finflag, true)
 }
 
 class CoreSpec extends AnyFreeSpec with Matchers {
   "tester should returned values with interpreter" in {
     for {
-      n <- 0 until 10
+      n <- 0 until 23
     } {
       println(n)
       Driver.execute(Array("--backend-name", "firrtl"), () => new TopCore(n)) { c =>
