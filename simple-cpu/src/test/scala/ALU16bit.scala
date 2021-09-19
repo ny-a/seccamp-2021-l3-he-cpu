@@ -22,6 +22,16 @@ class ALU16bitTester(c: ALU16bit) extends PeekPokeTester(c) {
         println(s"$i + $j failed")
         b.break
       }
+      val uint_i = if (0 <= i) i else (1 << 16) + i
+      val uint_j = if (0 <= j) j else (1 << 16) + j
+      if (!expect(c.io.flagC, 65535 < (uint_i + uint_j))) {
+        println(s"$i + $j flagC failed")
+        b.break
+      }
+      if (!expect(c.io.flagV, (i + j) < -32768 || 32767 < (i + j))) {
+        println(s"$i + $j flagV failed")
+        b.break
+      }
 
       // Opcode SUB
       poke(c.io.opcode, ALUOpcode.SUB.value)

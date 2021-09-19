@@ -22,22 +22,35 @@ class ALU16bit extends Module {
     val dr     = Output(SInt(16.W))
     val flagZ  = Output(Bool())
     val flagS  = Output(Bool())
+    val flagC  = Output(Bool())
+    val flagV  = Output(Bool())
   })
 
   val dr = RegInit(0.S(16.W))
-  val flagZ = RegInit(0.U(1.W))
-  val flagS = RegInit(0.U(1.W))
+  val flagZ = RegInit(false.B)
+  val flagS = RegInit(false.B)
+  val flagC = RegInit(false.B)
+  val flagV = RegInit(false.B)
   val result = Wire(SInt(16.W))
 
   dr := dr
   io.dr := dr
   io.flagZ := flagZ
   io.flagS := flagS
+  io.flagC := flagC
+  io.flagV := flagV
   result := DontCare
+
+  flagC := false.B
+  flagV := false.B
 
   when(io.phase === FourPhase.Execution){
     when(io.opcode === ALUOpcode.ADD){
-      result := io.in0 + io.in1
+      val adderResult = Wire(UInt(17.W))
+      adderResult := io.in0.asUInt +& io.in1.asUInt
+      result := adderResult(15, 0).asSInt
+      flagC := adderResult(16)
+      flagV := (!(io.in0(15) ^ io.in1(15))) & (io.in1(15) ^ result(15))
     }
 
     when(io.opcode === ALUOpcode.SUB){
