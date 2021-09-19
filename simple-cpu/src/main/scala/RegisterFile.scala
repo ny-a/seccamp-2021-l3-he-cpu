@@ -20,7 +20,7 @@ class RegisterFile(val registerLength: Int = 8) extends Module {
   io.out0 := register(io.readSelect0)
   io.out1 := register(io.readSelect1)
 
-  when(io.phase === FourPhase.WriteBack && io.writeEnabled === 1.U){
+  when(io.phase === FourPhase.WriteBack && io.writeEnabled){
     register(io.writeSelect) := io.drValue
   }
 }

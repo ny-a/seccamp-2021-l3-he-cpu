@@ -64,7 +64,7 @@ class InstructionDecoder extends Module {
     val finflag = Output(Bool())
   })
 
-  val registerWriteEnabled = RegInit(0.U(1.W))
+  val registerWriteEnabled = RegInit(false.B)
   val registerWrite = RegInit(0.U(3.W))
   val ar = RegInit(0.S(16.W))
   val br = RegInit(0.S(16.W))
@@ -85,18 +85,18 @@ class InstructionDecoder extends Module {
   io.finflag := finflag
 
   when(io.phase === FourPhase.InstructionDecode){
-    registerWriteEnabled := 0.U
+    registerWriteEnabled := false.B
     branchCondition := BranchCondition.Never.value.U
     when(io.irValue === OpCode1.Branch){
       when(io.irValue === OpCode2.LI){
-        registerWriteEnabled := 1.U
+        registerWriteEnabled := true.B
         registerWrite := io.irValue(10, 8)
         ar := 0.S
         br := io.irValue(7, 0).asSInt
         aluControl := ALUOpcode.ADD.value.U
       }
       when(io.irValue === OpCode2.Branch){
-        registerWriteEnabled := 0.U
+        registerWriteEnabled := false.B
         ar := io.pcPlus1Value.asSInt
         br := io.irValue(7, 0).asSInt
         aluControl := ALUOpcode.ADD.value.U
@@ -104,28 +104,28 @@ class InstructionDecoder extends Module {
       }
       when(io.irValue === OpCode2.ConditionalBranch){
         when(io.irValue === BranchConditionCode.BE){
-          registerWriteEnabled := 0.U
+          registerWriteEnabled := false.B
           ar := io.pcPlus1Value.asSInt
           br := io.irValue(7, 0).asSInt
           aluControl := ALUOpcode.ADD.value.U
           branchCondition := BranchCondition.IfZ.value.U
         }
         when(io.irValue === BranchConditionCode.BLT){
-          registerWriteEnabled := 0.U
+          registerWriteEnabled := false.B
           ar := io.pcPlus1Value.asSInt
           br := io.irValue(7, 0).asSInt
           aluControl := ALUOpcode.ADD.value.U
           branchCondition := BranchCondition.IfS.value.U
         }
         when(io.irValue === BranchConditionCode.BLE){
-          registerWriteEnabled := 0.U
+          registerWriteEnabled := false.B
           ar := io.pcPlus1Value.asSInt
           br := io.irValue(7, 0).asSInt
           aluControl := ALUOpcode.ADD.value.U
           branchCondition := BranchCondition.IfSorZ.value.U
         }
         when(io.irValue === BranchConditionCode.BNE){
-          registerWriteEnabled := 0.U
+          registerWriteEnabled := false.B
           ar := io.pcPlus1Value.asSInt
           br := io.irValue(7, 0).asSInt
           aluControl := ALUOpcode.ADD.value.U
@@ -135,7 +135,7 @@ class InstructionDecoder extends Module {
     }
     when(io.irValue === OpCode1.ComputeIO){
       when(io.irValue === OpCode3.ADD){
-        registerWriteEnabled := 1.U
+        registerWriteEnabled := true.B
         registerWrite := io.irValue(10, 8)
         io.registerRead0 := io.irValue(10, 8)
         io.registerRead1 := io.irValue(13, 11)
@@ -144,7 +144,7 @@ class InstructionDecoder extends Module {
         aluControl := ALUOpcode.ADD.value.U
       }
       when(io.irValue === OpCode3.SUB){
-        registerWriteEnabled := 1.U
+        registerWriteEnabled := true.B
         registerWrite := io.irValue(10, 8)
         io.registerRead0 := io.irValue(10, 8)
         io.registerRead1 := io.irValue(13, 11)
@@ -153,7 +153,7 @@ class InstructionDecoder extends Module {
         aluControl := ALUOpcode.SUB.value.U
       }
       when(io.irValue === OpCode3.AND){
-        registerWriteEnabled := 1.U
+        registerWriteEnabled := true.B
         registerWrite := io.irValue(10, 8)
         io.registerRead0 := io.irValue(10, 8)
         io.registerRead1 := io.irValue(13, 11)
@@ -162,7 +162,7 @@ class InstructionDecoder extends Module {
         aluControl := ALUOpcode.AND.value.U
       }
       when(io.irValue === OpCode3.OR){
-        registerWriteEnabled := 1.U
+        registerWriteEnabled := true.B
         registerWrite := io.irValue(10, 8)
         io.registerRead0 := io.irValue(10, 8)
         io.registerRead1 := io.irValue(13, 11)
@@ -171,7 +171,7 @@ class InstructionDecoder extends Module {
         aluControl := ALUOpcode.OR.value.U
       }
       when(io.irValue === OpCode3.XOR){
-        registerWriteEnabled := 1.U
+        registerWriteEnabled := true.B
         registerWrite := io.irValue(10, 8)
         io.registerRead0 := io.irValue(10, 8)
         io.registerRead1 := io.irValue(13, 11)
@@ -180,7 +180,7 @@ class InstructionDecoder extends Module {
         aluControl := ALUOpcode.XOR.value.U
       }
       when(io.irValue === OpCode3.CMP){
-        registerWriteEnabled := 0.U
+        registerWriteEnabled := false.B
         io.registerRead0 := io.irValue(10, 8)
         io.registerRead1 := io.irValue(13, 11)
         ar := io.registerValue0
@@ -188,7 +188,7 @@ class InstructionDecoder extends Module {
         aluControl := ALUOpcode.SUB.value.U
       }
       when(io.irValue === OpCode3.MOV){
-        registerWriteEnabled := 1.U
+        registerWriteEnabled := true.B
         registerWrite := io.irValue(10, 8)
         io.registerRead1 := io.irValue(13, 11)
         ar := 0.S
@@ -197,7 +197,7 @@ class InstructionDecoder extends Module {
       }
 
       when(io.irValue === OpCode3.SLL){
-        registerWriteEnabled := 1.U
+        registerWriteEnabled := true.B
         registerWrite := io.irValue(10, 8)
         io.registerRead0 := io.irValue(10, 8)
         ar := io.registerValue0
@@ -205,7 +205,7 @@ class InstructionDecoder extends Module {
         aluControl := ALUOpcode.SLL.value.U
       }
       when(io.irValue === OpCode3.SLR){
-        registerWriteEnabled := 1.U
+        registerWriteEnabled := true.B
         registerWrite := io.irValue(10, 8)
         io.registerRead0 := io.irValue(10, 8)
         ar := io.registerValue0
@@ -213,7 +213,7 @@ class InstructionDecoder extends Module {
         aluControl := ALUOpcode.SLR.value.U
       }
       when(io.irValue === OpCode3.SRL){
-        registerWriteEnabled := 1.U
+        registerWriteEnabled := true.B
         registerWrite := io.irValue(10, 8)
         io.registerRead0 := io.irValue(10, 8)
         ar := io.registerValue0
@@ -221,7 +221,7 @@ class InstructionDecoder extends Module {
         aluControl := ALUOpcode.SRL.value.U
       }
       when(io.irValue === OpCode3.SRA){
-        registerWriteEnabled := 1.U
+        registerWriteEnabled := true.B
         registerWrite := io.irValue(10, 8)
         io.registerRead0 := io.irValue(10, 8)
         ar := io.registerValue0
@@ -232,7 +232,7 @@ class InstructionDecoder extends Module {
         // TODO: Implement
       }
       when(io.irValue === OpCode3.OUT){
-        registerWriteEnabled := 0.U
+        registerWriteEnabled := false.B
         io.registerRead1 := io.irValue(13, 11)
         ar := 0.S
         br := io.registerValue1
@@ -241,7 +241,7 @@ class InstructionDecoder extends Module {
       }
 
       when(io.irValue === OpCode3.HLT){
-        registerWriteEnabled := 0.U
+        registerWriteEnabled := false.B
         ar := io.pcPlus1Value.asSInt
         br := -1.S
         aluControl := ALUOpcode.ADD.value.U

@@ -1,11 +1,6 @@
 import chisel3._
 import chisel3.util.BitPat
 
-object IsBranching {
-  def NO = BitPat("b0")
-  def YES = BitPat("b1")
-}
-
 class InstructionFetcher() extends Module {
   val io = IO(new Bundle{
     val phase = Input(UInt(2.W))
@@ -36,10 +31,10 @@ class InstructionFetcher() extends Module {
   }
 
   when(io.phase === FourPhase.WriteBack){
-    when(io.isBranching === IsBranching.NO) {
+    when(!io.isBranching) {
       pc := pcPlus1
     }
-    when(io.isBranching === IsBranching.YES) {
+    when(io.isBranching) {
       pc := io.drValue.asUInt
     }
   }

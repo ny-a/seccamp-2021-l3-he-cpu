@@ -35,10 +35,10 @@ class BranchController extends Module {
   when(io.phase === FourPhase.Execution){
     isBranching := (
       io.branchCondition === BranchCondition.Always ||
-      (io.branchCondition === BranchCondition.IfS && flagS === 1.U) ||
-      (io.branchCondition === BranchCondition.IfZ && flagZ === 1.U) ||
-      (io.branchCondition === BranchCondition.IfSorZ && (flagS === 1.U || flagZ === 1.U)) ||
-      (io.branchCondition === BranchCondition.IfNotZ && flagZ === 0.U)
+      (io.branchCondition === BranchCondition.IfS && flagS) ||
+      (io.branchCondition === BranchCondition.IfZ && flagZ) ||
+      (io.branchCondition === BranchCondition.IfSorZ && (flagS || flagZ)) ||
+      (io.branchCondition === BranchCondition.IfNotZ && !flagZ)
     )
   }
 
