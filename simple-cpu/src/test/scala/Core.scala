@@ -41,7 +41,11 @@ class CoreTester(c: TopCore, val n: Int) extends PeekPokeTester(c) {
     return fib(i - 2) + fib(i - 1)
   }
   val answer = fib(n)
-  step(32 + 12 * n)
+  step(12 * n)
+  step(24)
+  expect(c.io.finflag, false)
+  step(8)
+  expect(c.io.finflag, true)
   println(answer.toString)
   expect(c.io.out, answer)
   expect(c.io.finflag, true)
