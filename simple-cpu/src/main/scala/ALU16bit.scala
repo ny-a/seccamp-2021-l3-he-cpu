@@ -20,23 +20,23 @@ class ALU16bit extends Module {
     val in1    = Input(SInt(16.W))
     val opcode = Input(UInt(4.W))
     val dr     = Output(SInt(16.W))
-    val flagZ  = Output(Bool())
     val flagS  = Output(Bool())
+    val flagZ  = Output(Bool())
     val flagC  = Output(Bool())
     val flagV  = Output(Bool())
   })
 
   val dr = RegInit(0.S(16.W))
-  val flagZ = RegInit(false.B)
   val flagS = RegInit(false.B)
+  val flagZ = RegInit(false.B)
   val flagC = RegInit(false.B)
   val flagV = RegInit(false.B)
   val result = Wire(SInt(16.W))
 
   dr := dr
   io.dr := dr
-  io.flagZ := flagZ
   io.flagS := flagS
+  io.flagZ := flagZ
   io.flagC := flagC
   io.flagV := flagV
   result := DontCare
@@ -133,7 +133,7 @@ class ALU16bit extends Module {
     }
 
     dr := result
-    flagZ := result === 0.S
     flagS := result < 0.S
+    flagZ := result === 0.S
   }
 }

@@ -51,8 +51,8 @@ class Core extends Module {
   alu.io.opcode := instructionDecoder.io.aluControl
 
   branchController.io.branchCondition := instructionDecoder.io.branchCondition
-  branchController.io.flagZ := alu.io.flagZ
   branchController.io.flagS := alu.io.flagS
+  branchController.io.flagZ := alu.io.flagZ
 
   // Write Back phase
   registerFile.io.drValue := alu.io.dr
